@@ -1,0 +1,46 @@
+# ===================================================================
+# Spring Boot configuration.
+#
+# This configuration will be overridden by the Spring profile you use,
+# for example application-dev.yml if you use the "dev" profile.
+#
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+spring:
+  application:
+    name: phonebook
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://phonebook.coldzaqo0h4r.us-west-2.rds.amazonaws.com:5432/phonebook
+    username: luisfsosa
+    password: 12345678
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+  jackson:
+    serialization:
+      write-durations-as-timestamps: false
+  jpa:
+    database-platform: com.lfsa.luisfsosa.domain.util.FixedPostgreSQL10Dialect
+    open-in-view: false
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    properties:
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: true
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+      hibernate.hbm2ddl.auto: validate
+      hibernate.jdbc.time_zone: UTC
+
+server:
+  port: 10344
+  address: localhost

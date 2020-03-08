@@ -1,5 +1,13 @@
+/*
+ * Copyright (c) 2020, Luis Felipe Sosa Alvarez. All rights reserved.
+ * Use is subject to license terms. 
+ * 
+ * Phonebook Test
+ */
 package com.livevox.phonebook;
 
+import com.lfsa.luisfsosa.config.LfsaConstants;
+import com.lfsa.luisfsosa.config.LfsaProperties;
 import com.livevox.phonebook.config.ApplicationProperties;
 import com.livevox.phonebook.config.DefaultProfileUtil;
 import org.slf4j.Logger;
@@ -17,14 +25,26 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ * The Class PhoneBookApplication.
+ *
+ * @autor Luis Felipe Sosa Alvarez luisfsosa@gmail.com
+ */
 @SpringBootApplication
-@EnableConfigurationProperties({ApplicationProperties.class})
+@EnableConfigurationProperties({ApplicationProperties.class, LfsaProperties.class})
 public class PhoneBookApplication {
 
+	/** The Constant log. */
 	private static final Logger log = LoggerFactory.getLogger(PhoneBookApplication.class);
 
+	/** The env. */
 	private final Environment env;
 
+	/**
+	 * Instantiates a new phone book application.
+	 *
+	 * @param env the env
+	 */
 	public PhoneBookApplication(Environment env) {
 		this.env = env;
 	}
@@ -37,7 +57,7 @@ public class PhoneBookApplication {
 	@PostConstruct
 	public void initApplication() {
 		Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
-		if (activeProfiles.contains(DefaultProfileUtil.SPRING_PROFILE_DEVELOPMENT)) {
+		if (activeProfiles.contains(LfsaConstants.SPRING_PROFILE_DEVELOPMENT)) {
 			log.error("You have misconfigured your application! It should not run " +
 					"with both the 'dev' and 'prod' profiles at the same time.");
 		}
@@ -55,6 +75,11 @@ public class PhoneBookApplication {
 		logApplicationStartup(env);
 	}
 
+	/**
+	 * Log application startup.
+	 *
+	 * @param env the env
+	 */
 	private static void logApplicationStartup(Environment env) {
 		String protocol = "http";
 		String serverPort = env.getProperty("server.port");

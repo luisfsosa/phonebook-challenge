@@ -1,6 +1,9 @@
 /*
+ * Copyright (c) 2020, Luis Felipe Sosa Alvarez. All rights reserved.
+ * Use is subject to license terms. 
+ * 
+ * Phonebook Test
  */
-
 package com.lfsa.luisfsosa.domain.util;
 
 import org.hibernate.dialect.PostgreSQL10Dialect;
@@ -10,20 +13,27 @@ import org.hibernate.type.descriptor.sql.SqlTypeDescriptor;
 import java.sql.Types;
 
 /**
- * <p>FixedPostgreSQL10Dialect class.</p>
+ * The Class FixedPostgreSQL10Dialect.
+ *
+ * @autor Luis Felipe Sosa Alvarez luisfsosa@gmail.com
  */
 @SuppressWarnings("squid:S110")
 public class FixedPostgreSQL10Dialect extends PostgreSQL10Dialect {
 
     /**
-     * <p>Constructor for FixedPostgreSQL95Dialect.</p>
+     * Instantiates a new fixed postgre SQL 10 dialect.
      */
     public FixedPostgreSQL10Dialect() {
         super();
         registerColumnType(Types.BLOB, "bytea");
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Remap sql type descriptor.
+     *
+     * @param sqlTypeDescriptor the sql type descriptor
+     * @return the sql type descriptor
+     */
     @Override
     public SqlTypeDescriptor remapSqlTypeDescriptor(SqlTypeDescriptor sqlTypeDescriptor) {
         if (sqlTypeDescriptor.getSqlType() == java.sql.Types.BLOB) {
