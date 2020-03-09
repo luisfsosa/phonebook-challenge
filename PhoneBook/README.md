@@ -51,7 +51,6 @@ Edit [src/main/webapp/content/scss/vendor.scss](src/main/webapp/content/scss/ven
 
 Note: There are still a few other things remaining to do for Leaflet that we won't detail here.
 
-
 ### Using Angular CLI
 
 You can also use [Angular CLI][] to generate some custom client code.
@@ -66,8 +65,6 @@ will generate few files:
     create src/main/webapp/app/my-component/my-component.component.ts
     update src/main/webapp/app/app.module.ts
 
-## Building for production
-
 ### Packaging as jar
 
 To build the final jar and optimize the phonebook application for production, run:
@@ -81,7 +78,6 @@ To ensure everything worked, run:
 
 Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
 
-
 ### Packaging as war
 
 To package your application as a war in order to deploy it to an application server, run:
@@ -90,7 +86,7 @@ To package your application as a war in order to deploy it to an application ser
 
 ## Testing
 
-To launch your application's tests, run:
+To launch your application's tests, run (verify that database is empty before run tests):
 
     ./mvnw verify
 
@@ -101,7 +97,6 @@ Unit tests are run by [Jest][] and written with [Jasmine][]. They're located in 
     npm test
 
 For more information, refer to the [Running tests page][].
-
 
 [node.js]: https://nodejs.org/
 [yarn]: https://yarnpkg.org/

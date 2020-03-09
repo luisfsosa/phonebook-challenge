@@ -1,13 +1,12 @@
 /*
  * Copyright (c) 2020, Luis Felipe Sosa Alvarez. All rights reserved.
- * Use is subject to license terms. 
- * 
+ * Use is subject to license terms.
+ *
  * Phonebook Test
  */
 package com.livevox.phonebook.web;
 
 import com.livevox.phonebook.domain.Contact;
-import com.livevox.phonebook.repository.ContactRepository;
 import com.livevox.phonebook.service.ContactService;
 import com.livevox.phonebook.web.errors.BadRequestAlertException;
 
@@ -28,6 +27,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * REST controller for managing {@link com.livevox.phonebook.domain.Contact}.
@@ -139,4 +139,20 @@ public class ContactResource {
         contactService.deleteContact(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
+
+
+    /**
+     * Find contact by any.
+     *
+     * @param anyField the any field
+     * @return the response entity
+     */
+    @GetMapping("/contacts/findByAny")
+    public ResponseEntity<Set<Contact>> findContactByAny(@RequestParam(value = "anyField") String anyField){
+        log.debug("REST request to get a page of Contacts");
+        HttpHeaders headers = new HttpHeaders();
+        Set<Contact> contactSet = contactService.findContactByAnyField(anyField);
+        return ResponseEntity.ok().headers(headers).body(contactSet);
+    }
+
 }

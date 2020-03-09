@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2020, Luis Felipe Sosa Alvarez. All rights reserved.
- * Use is subject to license terms. 
- * 
+ * Use is subject to license terms.
+ *
  * Phonebook Test
  */package com.livevox.phonebook.web;
 
@@ -42,19 +42,19 @@ public class ContactResourceTest {
 
     /** The Constant DEFAULT_FIRST_NAME. */
     private static final String DEFAULT_FIRST_NAME = "AAAAAAAAAA";
-    
+
     /** The Constant UPDATED_FIRST_NAME. */
     private static final String UPDATED_FIRST_NAME = "BBBBBBBBBB";
 
     /** The Constant DEFAULT_LAST_NAME. */
     private static final String DEFAULT_LAST_NAME = "AAAAAAAAAA";
-    
+
     /** The Constant UPDATED_LAST_NAME. */
     private static final String UPDATED_LAST_NAME = "BBBBBBBBBB";
 
     /** The Constant DEFAULT_PHONE. */
     private static final String DEFAULT_PHONE = "AAAAAAAAAA";
-    
+
     /** The Constant UPDATED_PHONE. */
     private static final String UPDATED_PHONE = "BBBBBBBBBB";
 
@@ -109,7 +109,7 @@ public class ContactResourceTest {
 
     /**
      * Create an entity for this test.
-     * 
+     *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      *
@@ -123,10 +123,10 @@ public class ContactResourceTest {
             .phone(DEFAULT_PHONE);
         return contact;
     }
-    
+
     /**
      * Create an updated entity for this test.
-     * 
+     *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      *
@@ -220,7 +220,7 @@ public class ContactResourceTest {
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
             .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)));
     }
-    
+
     /**
      * Gets the contact.
      *
@@ -337,5 +337,30 @@ public class ContactResourceTest {
         // Validate the database contains one less item
         List<Contact> contactList = contactRepository.findAll();
         assertThat(contactList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void findContactByAny() throws Exception {
+        // Initialize the database
+        contactRepository.saveAndFlush(contact);
+
+        // Get contact by id
+        restContactMockMvc.perform(get("/api/contacts/findByAny?anyField={id}", contact.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(contact.getId().intValue())))
+            .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
+            .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
+            .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)));
+
+        // Get contact by firstName
+        restContactMockMvc.perform(get("/api/contacts/findByAny?anyField={firstName}", contact.getFirstName()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(contact.getId().intValue())))
+            .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
+            .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
+            .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)));
     }
 }

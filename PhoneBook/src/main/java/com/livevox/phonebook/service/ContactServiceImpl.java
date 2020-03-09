@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2020, Luis Felipe Sosa Alvarez. All rights reserved.
- * Use is subject to license terms. 
- * 
+ * Use is subject to license terms.
+ *
  * Phonebook Test
  */
 package com.livevox.phonebook.service;
@@ -17,7 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URISyntaxException;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * The Class ContactServiceImpl.
@@ -71,6 +74,45 @@ public class ContactServiceImpl implements ContactService {
     }
 
     /**
+     * Find contact by any field.
+     *
+     * @param anyField the any field
+     * @return the sets the
+     */
+    @Override
+    public Set<Contact> findContactByAnyField(String anyField) {
+
+        List<Contact> contactList;
+        Optional<Contact> contact;
+        Set<Contact> contactAllList = new HashSet<>();
+
+        if (ContactServiceImpl.isLong(anyField)) {
+            contact = contactRepository.findById(Long.parseLong(anyField));
+
+            if(contact.isPresent()){
+                contactAllList.add(contact.get());
+                return contactAllList;
+            }
+        }
+
+        contactList = contactRepository.findByFirstNameIgnoreCaseContaining(anyField);
+        if (contactList != null && contactList.size() > 0) {
+            contactAllList.addAll(contactList);
+        }
+
+        contactList = contactRepository.findByLastNameIgnoreCaseContaining(anyField);
+        if (contactList != null && contactList.size() > 0) {
+            contactAllList.addAll(contactList);
+        }
+
+        contactList = contactRepository.findByphoneIgnoreCaseContaining(anyField);
+        if (contactList != null && contactList.size() > 0) {
+            contactAllList.addAll(contactList);
+        }
+        return contactAllList;
+    }
+
+    /**
      * Gets the contact.
      *
      * @param id the id
@@ -89,5 +131,14 @@ public class ContactServiceImpl implements ContactService {
     public void deleteContact(Long id) {
         log.debug("deleteContact contact  {}", id);
         contactRepository.deleteById(id);
+    }
+
+    private static boolean isLong(String strNum) {
+        try {
+            double d = Long.parseLong(strNum);
+        } catch (NumberFormatException | NullPointerException nfe) {
+            return false;
+        }
+        return true;
     }
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2020, Luis Felipe Sosa Alvarez. All rights reserved.
- * Use is subject to license terms. 
- * 
+ * Use is subject to license terms.
+ *
  * Phonebook Test
  */
 package com.livevox.phonebook.service;
@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.net.URISyntaxException;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * The Interface ContactService.
@@ -45,6 +46,15 @@ public interface ContactService {
      * @return the all contacts
      */
     Page<Contact> getAllContacts(Pageable pageable);
+
+
+    /**
+     * Find contact by any field.
+     *
+     * @param anyField the any field
+     * @return the sets the
+     */
+    public Set<Contact> findContactByAnyField(String anyField);
 
     /**
      * Gets the contact.
